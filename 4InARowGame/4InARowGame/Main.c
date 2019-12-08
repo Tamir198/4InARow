@@ -7,6 +7,10 @@
 #define COLS 7
 char board[ROWS][COLS];
 
+const char firstPlayerChar = 'X';
+const char secondPlayerChar = 'O';
+const char enter = '\n';
+const char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F' };
 
 
 /*********** Declarations ************/
@@ -31,13 +35,17 @@ void setCell(int row, int col, char sign);
 void clearScreen();
 
 void printBoard();
+void askPlayer1Input();
+void askPlayer2Input();
 
 
 /*************** Main ****************/
 int main(){
 	initBoard();
 	printBoard();
+	askPlayer1Input();
 	system("pause");
+
 }
 
 
@@ -57,7 +65,6 @@ void initBoard(){
 		for (j = 0; j < COLS; j++){
 			setCell(i + 1, j + 1, ' ');
 		}
-
 	}
 }
 
@@ -67,15 +74,36 @@ void clearScreen(){
 
 void printBoard() {
 	int i,j;
-	char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F'};
-
-	printf("	1	2	3	4	5	6	7\n");
-
+	
+	printf("	1	2	3	4	5	6	7 %c", enter);
 	for (i = 0; i < ROWS; i++) {
-		printf("%c	", charArr[i]);
+		printf("%c", charArr[i]);
 		for (j = 0; j < COLS; j++) {
-			printf("y	");
+			printf("	y");
+			setCell(i + 1, j + 1, 'x');
 		}
 		printf("\n");
 	}
+}
+
+void askPlayer1Input() {
+	int selection;
+	char str[] = "Please enter column input (a number between 1-7):";
+	printf("Player number 1:");
+	printf("%s %c", str, enter);
+	scanf("%d",&selection);
+	printf("\n %d ",selection);
+
+	askPlayer2Input();
+
+}
+
+void askPlayer2Input() {
+	int selection;
+	char str[] = "Please enter column input (a number between 1-7):";
+	printf("Player number 2:");
+	printf("%s %c", str, enter);
+	scanf("%d", &selection);
+	printf("\n %d ", selection);
+
 }
