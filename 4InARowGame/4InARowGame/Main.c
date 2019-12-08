@@ -37,6 +37,7 @@ void clearScreen();
 void printBoard();
 void askPlayer1Input();
 void askPlayer2Input();
+void PutCharOnBoard(int col,char c);
 
 
 /*************** Main ****************/
@@ -44,6 +45,8 @@ int main(){
 	initBoard();
 	printBoard();
 	askPlayer1Input();
+
+	//manual testing 
 	system("pause");
 
 }
@@ -79,8 +82,8 @@ void printBoard() {
 	for (i = 0; i < ROWS; i++) {
 		printf("%c", charArr[i]);
 		for (j = 0; j < COLS; j++) {
-			printf("	y");
-			setCell(i + 1, j + 1, 'x');
+			//printf("	y");
+			printf("	%c",getCell(i,j));
 		}
 		printf("\n");
 	}
@@ -93,7 +96,7 @@ void askPlayer1Input() {
 	printf("%s %c", str, enter);
 	scanf("%d",&selection);
 	printf("\n %d ",selection);
-
+	PutCharOnBoard(2, 'd');
 	askPlayer2Input();
 
 }
@@ -104,6 +107,14 @@ void askPlayer2Input() {
 	printf("Player number 2:");
 	printf("%s %c", str, enter);
 	scanf("%d", &selection);
-	printf("\n %d ", selection);
+	PutCharOnBoard(5, 'f');
 
+}
+
+void PutCharOnBoard(int col, char c) {
+	setCell(col,3,c);
+	clearScreen();
+	printBoard();
+	//Printing is working and adding the value to the cell also 
+	//todo print this on the place in the board
 }
