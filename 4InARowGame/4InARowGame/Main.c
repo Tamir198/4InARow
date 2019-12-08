@@ -8,6 +8,7 @@
 char board[ROWS][COLS];
 
 
+
 /*********** Declarations ************/
 
 /// This function initializes the game board by assigning each cell
@@ -29,10 +30,14 @@ void setCell(int row, int col, char sign);
 /// This function clears the screen.
 void clearScreen();
 
+void printBoard();
+
 
 /*************** Main ****************/
-void main(){
-
+int main(){
+	initBoard();
+	printBoard();
+	system("pause");
 }
 
 
@@ -48,14 +53,29 @@ void setCell(int row, int col, char sign){
 
 void initBoard(){
 	int i, j;
-
 	for (i = 0; i < ROWS; i++){
 		for (j = 0; j < COLS; j++){
 			setCell(i + 1, j + 1, ' ');
 		}
+
 	}
 }
 
 void clearScreen(){
 	system("cls");
+}
+
+void printBoard() {
+	int i,j;
+	char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F'};
+
+	printf("	1	2	3	4	5	6	7\n");
+
+	for (i = 0; i < ROWS; i++) {
+		printf("%c	", charArr[i]);
+		for (j = 0; j < COLS; j++) {
+			printf("y	");
+		}
+		printf("\n");
+	}
 }
