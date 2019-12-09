@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "stdio.h"
 #include "stdlib.h"
+#include "stdbool.h"
+
 
 /*************** Board ***************/
 #define ROWS 6
@@ -11,6 +13,17 @@ const char firstPlayerChar = 'X';
 const char secondPlayerChar = 'O';
 const char enter = '\n';
 const char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F' };
+
+//Erros
+const char outOfRange[] = "Out of 1-7 range \n";
+const char enterColNumber[47] = "Please enter column input (number ranged 1-7): ";
+//Players
+const char p1[] = "Player number 1:";
+const char p2[] = "Player number 2:";
+const char p1Char = 'X';
+const char p2Char = 'O';
+
+
 
 
 /*********** Declarations ************/
@@ -39,12 +52,18 @@ void askPlayer1Input();
 void askPlayer2Input();
 void PutCharOnBoard(int col,char c);
 
+bool isColumNumberValid(int col);
+bool isColumNotEmpty(int col);
+
+int scanNumber(char c);
+
 
 /*************** Main ****************/
 int main(){
 	initBoard();
 	printBoard();
 	askPlayer1Input();
+	askPlayer2Input();
 
 	//manual testing 
 	system("pause");
@@ -77,7 +96,6 @@ void clearScreen(){
 
 void printBoard() {
 	int i,j;
-	
 	printf("	1	2	3	4	5	6	7 %c", enter);
 	for (i = 0; i < ROWS; i++) {
 		printf("%c", charArr[i]);
@@ -90,31 +108,47 @@ void printBoard() {
 }
 
 void askPlayer1Input() {
-	int selection;
-	char str[] = "Please enter column input (a number between 1-7):";
-	printf("Player number 1:");
-	printf("%s %c", str, enter);
-	scanf("%d",&selection);
-	printf("\n %d ",selection);
-	PutCharOnBoard(2, 'd');
-	askPlayer2Input();
-
+	printf("%s \n%s	 %c ", p2, enterColNumber, enter);
+	scanNumber(p1Char);
 }
 
 void askPlayer2Input() {
-	int selection;
-	char str[] = "Please enter column input (a number between 1-7):";
-	printf("Player number 2:");
-	printf("%s %c", str, enter);
-	scanf("%d", &selection);
-	PutCharOnBoard(5, 'f');
-
+	printf("%s \n%s	 %c ",p2 , enterColNumber, enter);
+	scanNumber(p2Char);
 }
 
 void PutCharOnBoard(int col, char c) {
-	setCell(col,3,c);
+	//setCell(0,col-1,c);
+	setCell(0, col - 1, c);
 	clearScreen();
 	printBoard();
 	//Printing is working and adding the value to the cell also 
 	//todo print this on the place in the board
 }
+
+bool isColumNumberValid(int col) {
+	if (col <= 7 && col > 0) {
+		printf("%s" ,outOfRange);
+		return true;
+
+	}else {
+		return false;
+	}
+}
+
+bool isColumNotEmpty(int col) {
+	return false;
+}
+
+int scanNumber(char c) {
+	int col ;
+	scanf("%d", &col);
+	if (isColumNumberValid(col)) {
+		PutCharOnBoard(col, c);
+	}else {
+		printf(outOfRange);
+		scanNumber(c);
+	}
+	
+}
+
