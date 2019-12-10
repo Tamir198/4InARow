@@ -16,6 +16,7 @@ const char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F' };
 
 //Erros
 const char outOfRange[] = "Out of 1-7 range \n";
+const char columIsFull[] = "Colum is full, chose another \n";
 const char enterColNumber[47] = "Please enter column input (number ranged 1-7): ";
 //Players
 const char p1[] = "Player number 1:";
@@ -53,9 +54,12 @@ void askPlayer2Input();
 void PutCharOnBoard(int col,char c);
 
 bool isColumNumberValid(int col);
-bool isColumNotEmpty(int col);
+bool isColumFull(int col);
 
-int scanNumber(char c);
+void scanNumber(char c);
+int chooseFreeSquare(int col);
+bool gameWon();
+bool noWinners();
 
 
 /*************** Main ****************/
@@ -108,7 +112,7 @@ void printBoard() {
 }
 
 void askPlayer1Input() {
-	printf("%s \n%s	 %c ", p2, enterColNumber, enter);
+	printf("%s \n%s	 %c ", p1, enterColNumber, enter);
 	scanNumber(p1Char);
 }
 
@@ -118,29 +122,44 @@ void askPlayer2Input() {
 }
 
 void PutCharOnBoard(int col, char c) {
-	//setCell(0,col-1,c);
-	setCell(0, col - 1, c);
+	//todo change setcell to add to the next cell if cell is taken
+	setCell(chooseFreeSquare(col), col - 1, c);
 	clearScreen();
 	printBoard();
 	//Printing is working and adding the value to the cell also 
 	//todo print this on the place in the board
 }
 
+
+int chooseFreeSquare(int col) {
+	//todo fix wrong return value
+	for (int i = 0; i<6; i++) {
+		printf("this is test %d", getCell(col, i));
+		if (getCell(col,i ) == ' ') {
+			//F is 5 and A is 0 on the board
+			return 5 - i;
+		}
+	}
+	return 3;
+}
+
 bool isColumNumberValid(int col) {
 	if (col <= 7 && col > 0) {
-		printf("%s" ,outOfRange);
+		printf("%s", outOfRange);
 		return true;
-
-	}else {
+	}
+	else {
 		return false;
 	}
 }
 
-bool isColumNotEmpty(int col) {
+
+bool isColumFull(int col) {
+	//todo fill method
 	return false;
 }
 
-int scanNumber(char c) {
+void scanNumber(char c) {
 	int col ;
 	scanf("%d", &col);
 	if (isColumNumberValid(col)) {
@@ -150,5 +169,15 @@ int scanNumber(char c) {
 		scanNumber(c);
 	}
 	
+}
+
+bool gameWon() {
+	//todo fill method
+	return false;
+}
+
+bool noWinners() {
+	//todo fill method
+	return false;
 }
 
