@@ -187,22 +187,32 @@ void startGame() {
 		}
 		if (is_board_full()) {
 			printf("Board is full, press any key to start again");
-			scanf("%c", &flag);
+			scanf("%c ", &flag);
 			clearScreen();
+			initBoard();
+			printBoard();
+			continue;
 
-			//continue;
+			/*
+			//todo handle what to do when board is empty
+			printf("Board is full, press any key to start again");
+			scanf("%c", &flag);
+			continue;*/
 		}
 
 		lastCol = askPlayerInput(player2);
 		if (isGameWon(lastCol, getLastRow(lastCol), player2)) {
 			printf("Player %c won", player2);
-			scanf("%c", &flag);
+			scanf("%c ", &flag);
 			break;
 		}
 		if (is_board_full()) {
 			printf("Board is full, press any key to start again");
-			scanf("%c", &flag);
+			scanf("%c ", &flag);
 			clearScreen();
+			initBoard();
+			printBoard();
+			continue;
 		}
 	}
 }
