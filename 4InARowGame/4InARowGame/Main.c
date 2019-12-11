@@ -26,6 +26,9 @@ const char p2Char = 'O';
 
 
 
+#pragma region Declarations
+
+
 
 /*********** Declarations ************/
 
@@ -51,7 +54,7 @@ void clearScreen();
 void printBoard();
 void askPlayer1Input();
 void askPlayer2Input();
-void PutCharOnBoard(int col,char c);
+void PutCharOnBoard(int col, char c);
 
 bool isColumNumberValid(int col);
 bool isColumFull(int col);
@@ -61,9 +64,9 @@ int chooseFreeSquare(int col);
 bool gameWon();
 bool noWinners();
 
-
+#pragma endregion
 /*************** Main ****************/
-int main(){
+int main() {
 	initBoard();
 	printBoard();
 	askPlayer1Input();
@@ -76,36 +79,36 @@ int main(){
 
 
 /********** Implementations **********/
-char getCell(int row, int col){
+char getCell(int row, int col) {
 	return board[row - 1][col - 1];
 }
 
 
-void setCell(int row, int col, char sign){
+void setCell(int row, int col, char sign) {
 	board[row - 1][col - 1] = sign;
 }
 
-void initBoard(){
+void initBoard() {
 	int i, j;
-	for (i = 0; i < ROWS; i++){
-		for (j = 0; j < COLS; j++){
+	for (i = 0; i < ROWS; i++) {
+		for (j = 0; j < COLS; j++) {
 			setCell(i + 1, j + 1, ' ');
 		}
 	}
 }
 
-void clearScreen(){
+void clearScreen() {
 	system("cls");
 }
 
 void printBoard() {
-	int i,j;
+	int i, j;
 	printf("	1	2	3	4	5	6	7 %c", enter);
-	for (i = 0; i < ROWS; i++) {
+	for (i = 1; i <= ROWS; i++) {
 		printf("%c", charArr[i]);
-		for (j = 0; j < COLS; j++) {
+		for (j = 1; j <= COLS; j++) {
 			//printf("	y");
-			printf("	%c",getCell(i,j));
+			printf("	%c", getCell(i, j));
 		}
 		printf("\n");
 	}
@@ -117,13 +120,15 @@ void askPlayer1Input() {
 }
 
 void askPlayer2Input() {
-	printf("%s \n%s	 %c ",p2 , enterColNumber, enter);
+	printf("%s \n%s	 %c ", p2, enterColNumber, enter);
 	scanNumber(p2Char);
 }
 
 void PutCharOnBoard(int col, char c) {
 	//todo change setcell to add to the next cell if cell is taken
-	setCell(chooseFreeSquare(col), col - 1, c);
+	int x = chooseFreeSquare(col);
+	/*int x = 5;*/
+	setCell(x, col, c);
 	clearScreen();
 	printBoard();
 	//Printing is working and adding the value to the cell also 
@@ -132,25 +137,23 @@ void PutCharOnBoard(int col, char c) {
 
 
 int chooseFreeSquare(int col) {
+	int i;
 	//todo fix wrong return value
-	for (int i = 0; i<6; i++) {
-		printf("this is test %d", getCell(col, i));
-		if (getCell(col,i ) == ' ') {
+	for (i = 6; i > 0; i--) {
+		//printf("this is test %d", getCell(col, i));
+		if (getCell(i, col) == ' ') {
 			//F is 5 and A is 0 on the board
-			return 5 - i;
+			return i;
 		}
 	}
-	return 3;
 }
 
 bool isColumNumberValid(int col) {
-	if (col <= 7 && col > 0) {
+	if (col > 7 && col < 0) {
 		printf("%s", outOfRange);
-		return true;
-	}
-	else {
 		return false;
 	}
+	return true;
 }
 
 
@@ -160,15 +163,16 @@ bool isColumFull(int col) {
 }
 
 void scanNumber(char c) {
-	int col ;
+	int col;
 	scanf("%d", &col);
 	if (isColumNumberValid(col)) {
 		PutCharOnBoard(col, c);
-	}else {
+	}
+	else {
 		printf(outOfRange);
 		scanNumber(c);
 	}
-	
+
 }
 
 bool gameWon() {
