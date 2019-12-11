@@ -149,7 +149,7 @@ bool isColumFull(int col) {
 int scanNumber(char c) {
 	int col, row;
 	scanf("%d", &col);
-	if (isColumNumberValid(col) && chooseFreeSquare(col) > 1) {
+	if (isColumNumberValid(col) && chooseFreeSquare(col) > 0) {
 		PutCharOnBoard(col, c);
 		return col;
 	}
@@ -161,11 +161,12 @@ int scanNumber(char c) {
 
 
 bool isGameWon(int col, int row, char c) {
-	return (
-		check_win_vertically(col, row, c) ||
-		check_win_horizontally(col, row, c) ||
-		check_win_diagnol_top_right_bottom_left(col, row, c) ||
-		check_win_diagnol_top_left_bottom_right(col, row, c));
+	
+	return false;// (
+		//check_win_vertically(col, row, c) ||
+		//check_win_horizontally(col, row, c) ||
+		///check_win_diagnol_top_right_bottom_left(col, row, c) ||
+		//check_win_diagnol_top_left_bottom_right(col, row, c));
 }
 
 
@@ -188,7 +189,8 @@ void startGame() {
 			printf("Board is full, press any key to start again");
 			scanf("%c", &flag);
 			clearScreen();
-			continue;
+
+			//continue;
 		}
 
 		lastCol = askPlayerInput(player2);
@@ -230,11 +232,10 @@ bool check_win_vertically(int col, int row, char c) {
 }
 
 bool check_win_horizontally(int col, int row, char c) {
-	//working secret was row + 2
 	int i, counter = 1;
-	//left to right
+	// Right to left
 	for (i = col - 1; i >= col - 3; i--) {
-		if (c == getCell(row + 1, i + 1)) {
+		if (c == getCell(row, i)) {
 			counter++;
 		}
 		else {
@@ -242,24 +243,23 @@ bool check_win_horizontally(int col, int row, char c) {
 		}
 	}
 
-	//need fix right to left is not worlking
-		//right to left
+		//left to right
 	for (i = col + 1; i <= col + 3; i++) {
-		if (c == getCell(row + 1, i + 1)) {
+		if (c == getCell(row, i)) {
 			counter++;
 		}
 		else {
 			break;
 		}
 	}
-	return (counter == 4);
+	return counter > 3;
 }
 bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	//todo check wrong return value
 	//need fix
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
-		if (c == getCell(row + i + 1, col + 1 + i)) {
+		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
 		else {
@@ -269,31 +269,19 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	
 	//works
 	for (i = 1; i <= 4; i++) {
-		printf("Test  %c ", getCell(row +  1 + i, col + 1 + i));
-		if (c == getCell(row + 1 + i, col + 1 + i)) {
+		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
 		else {
 			break;
 		}
 	}
-	return (counter == 4);
+	return counter > 3;
 }
 bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
-	//todo check wrong return value
 	int i, counter = 1;
-	//need fix
-	for (i = - 1; i >= -4; i--) {
-		if (c == getCell(row + 1 + i, col + 1 - i)) {
-			counter++;
-		}
-		else {
-			break;
-		}
-	}
-	//need fix
-	for (i = 1; i <= 4; i++) {
-		if (c == getCell(row + 1 + i, col + 1 - i)) {
+	for (i = -1; i >= -4; i--) {
+		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
 		else {
@@ -301,13 +289,22 @@ bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
 		}
 	}
 
-	return (counter == 4);
+	//works
+	for (i = 1; i <= 4; i++) {
+		if (c == getCell(row - i, col - i)) {
+			counter++;
+		}
+		else {
+			break;
+		}
+	}
+	return counter > 3;
 }
 
 bool is_board_full() {
 	int i;
 	for (i = 1; i <= COLS; i++) {
-		if (getCell(1, i + 1) == ' ') {
+		if (getCell(1, i) == ' ') {
 			return false;
 		}
 	}
