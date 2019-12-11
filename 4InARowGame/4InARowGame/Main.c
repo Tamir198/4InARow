@@ -48,7 +48,8 @@ bool isTie();
 
 int chooseFreeSquare(int col);
 #pragma endregion
-
+int n = 4;
+char c = 'X';
 //Checks for win
 bool check_win_vertically(int col, char c);
 bool check_win_horizontally();
@@ -98,11 +99,11 @@ void printBoard() {
 	int i, j;
 	char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F' };
 	printf("	1	2	3	4	5	6	7 \n");
-	for (i = 1; i <= ROWS; i++) {
+	for (i = 0; i <= ROWS-1; i++) {
 		printf("%c", charArr[i]);
-		for (j = 1; j <= COLS; j++) {
+		for (j = 0; j < COLS; j++) {
 			//printf("	y");
-			printf("	%c", getCell(i, j));
+			printf("	%c", getCell(i+1, j+1));
 		}
 		printf("\n");
 	}
@@ -181,7 +182,7 @@ void scanNumber(char c) {
 
 bool isGameWon(int col, char c) {
 	return (
-		check_win_vertyclly(4,c) ||
+		check_win_vertically(4, c) ||
 		check_win_horizontally() ||
 		check_win_diagnol_top_right() ||
 		check_win_diagnol_top_left() ||
@@ -198,7 +199,8 @@ void startGame() {
 	askPlayer1Input();
 	askPlayer2Input();
 
-	while (!isGameWon(5,'O')) {
+	//while (!isGameWon(5,'O')) {
+	while (true) {
 
 		if (isTie()) {
 			printf("Tie ");
@@ -223,17 +225,18 @@ bool isTie() {
 
 bool check_win_vertically(int col, char c) {
 	int i, counter = 0;
-	for (i = ROWS; i > 0; i--)
+	for (i = ROWS; i > 0; i--) {
 		if (getCell(i, col) == getCell(i - 1, col)) {
 			counter++;
 			if (counter == 4) {
-				printf("This is true");
+				//todo print game won
 				return true;
 			}
 		}
 		else {
 			counter = 0;
 		}
+	}
 	printf("This is false");
 	return false;
 }
