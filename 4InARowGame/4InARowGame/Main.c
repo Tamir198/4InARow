@@ -9,20 +9,10 @@
 #define COLS 7
 char board[ROWS][COLS];
 
-const char firstPlayerChar = 'X';
-const char secondPlayerChar = 'O';
-const char enter = '\n';
-const char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F' };
-
-//Erros
-const char outOfRange[] = "Out of 1-7 range \n";
-const char columIsFull[] = "Colum is full, chose another \n";
-const char enterColNumber[47] = "Please enter column input (number ranged 1-7): ";
-//Players
-const char p1[] = "Player number 1:";
-const char p2[] = "Player number 2:";
-const char p1Char = 'X';
-const char p2Char = 'O';
+//const char p1[] = "Player number 1:";
+//const char p2[] = "Player number 2:";
+//const char p1Char = 'X';
+//const char p2Char = 'O';
 
 
 
@@ -52,26 +42,22 @@ void setCell(int row, int col, char sign);
 void clearScreen();
 
 void printBoard();
+void startGame();
+void scanNumber(char c);
 void askPlayer1Input();
 void askPlayer2Input();
-void PutCharOnBoard(int col, char c);
 
+bool PutCharOnBoard(int col, char c);
 bool isColumNumberValid(int col);
 bool isColumFull(int col);
-
-void scanNumber(char c);
-int chooseFreeSquare(int col);
 bool gameWon();
 bool noWinners();
 
+int chooseFreeSquare(int col);
 #pragma endregion
 /*************** Main ****************/
 int main() {
-	initBoard();
-	printBoard();
-	askPlayer1Input();
-	askPlayer2Input();
-
+	startGame();
 	//manual testing 
 	system("pause");
 
@@ -103,7 +89,8 @@ void clearScreen() {
 
 void printBoard() {
 	int i, j;
-	printf("	1	2	3	4	5	6	7 %c", enter);
+	char charArr[6] = { 'A','B', 'C', 'G', 'E', 'F' };
+	printf("	1	2	3	4	5	6	7 \n");
 	for (i = 1; i <= ROWS; i++) {
 		printf("%c", charArr[i]);
 		for (j = 1; j <= COLS; j++) {
@@ -115,24 +102,33 @@ void printBoard() {
 }
 
 void askPlayer1Input() {
-	printf("%s \n%s	 %c ", p1, enterColNumber, enter);
-	scanNumber(p1Char);
+	printf("Player 1 \nPlease enter column input(number ranged 1 - 7) : 	 \n ");
+	scanNumber('X');
+
+	//todo game win or not condition 
+	askPlayer2Input();
 }
 
 void askPlayer2Input() {
-	printf("%s \n%s	 %c ", p2, enterColNumber, enter);
-	scanNumber(p2Char);
+	printf("Player 2 \nPlease enter column input(number ranged 1 - 7) : 	 \n ");
+	scanNumber('O');
+
+	//todo game win or not condition 
+	askPlayer1Input();
 }
 
-void PutCharOnBoard(int col, char c) {
-	//todo change setcell to add to the next cell if cell is taken
-	int x = chooseFreeSquare(col);
-	/*int x = 5;*/
-	setCell(x, col, c);
-	clearScreen();
-	printBoard();
-	//Printing is working and adding the value to the cell also 
-	//todo print this on the place in the board
+bool PutCharOnBoard(int col, char c) {
+	if (isColumNumberValid(col)) {
+		int x = chooseFreeSquare(col);
+		setCell(x, col, c);
+		clearScreen();
+		printBoard();
+		return true;
+	}else {
+		printf("Colum number is not valid");
+		return false;
+	}
+
 }
 
 
@@ -140,17 +136,19 @@ int chooseFreeSquare(int col) {
 	int i;
 	//todo fix wrong return value
 	for (i = 6; i > 0; i--) {
-		//printf("this is test %d", getCell(col, i));
 		if (getCell(i, col) == ' ') {
 			//F is 5 and A is 0 on the board
 			return i;
 		}
 	}
+	
+	printf("Colum is full");
+	return 0;
 }
 
 bool isColumNumberValid(int col) {
-	if (col > 7 && col < 0) {
-		printf("%s", outOfRange);
+	if (col > 7 || col < 0) {
+		printf("Out of 1-7 range \n");
 		return false;
 	}
 	return true;
@@ -169,7 +167,6 @@ void scanNumber(char c) {
 		PutCharOnBoard(col, c);
 	}
 	else {
-		printf(outOfRange);
 		scanNumber(c);
 	}
 
@@ -177,11 +174,19 @@ void scanNumber(char c) {
 
 bool gameWon() {
 	//todo fill method
-	return false;
+	return true;
 }
 
 bool noWinners() {
 	//todo fill method
 	return false;
+}
+
+void startGame() {
+	initBoard();
+	printBoard();
+	askPlayer1Input();
+	askPlayer2Input();
+
 }
 
