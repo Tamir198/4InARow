@@ -162,11 +162,11 @@ int scanNumber(char c) {
 
 bool isGameWon(int col, int row, char c) {
 	
-	return false;// (
-		//check_win_vertically(col, row, c) ||
-		//check_win_horizontally(col, row, c) ||
-		///check_win_diagnol_top_right_bottom_left(col, row, c) ||
-		//check_win_diagnol_top_left_bottom_right(col, row, c));
+	return  (
+		check_win_vertically(col, row, c) ||
+		check_win_horizontally(col, row, c) ||
+		check_win_diagnol_top_right_bottom_left(col, row, c) ||
+		check_win_diagnol_top_left_bottom_right(col, row, c));
 }
 
 
@@ -192,12 +192,6 @@ void startGame() {
 			initBoard();
 			printBoard();
 			continue;
-
-			/*
-			//todo handle what to do when board is empty
-			printf("Board is full, press any key to start again");
-			scanf("%c", &flag);
-			continue;*/
 		}
 
 		lastCol = askPlayerInput(player2);
