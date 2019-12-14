@@ -261,12 +261,10 @@ bool check_win_horizontally(int col, int row, char c) {
 }
 bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	//todo check wrong return value
-	//need fix
+	//Looks like working
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
-		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
-		printf("This row %d	this col %d  ", row + i, col - i);
-		if (c == getCell(row + i, col - i)) {
+		if (isInsideTheArray(row + i, col - i) && c == getCell(row + i, col - i)) {
 			counter++;
 		}
 		else {
@@ -274,8 +272,11 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 		}
 	}
 
-	//works
+	//works ????
 	for (i = 1; i <= 4; i++) {
+		//todo add isInsideTheArray to here
+		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
+		printf("This row %d	this col %d  ", row - i, col - i);
 		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
@@ -288,6 +289,7 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
+		//todo add isInsideTheArray to here
 		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
@@ -298,6 +300,7 @@ bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
 
 	//works
 	for (i = 1; i <= 4; i++) {
+		//todo add isInsideTheArray to here
 		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
