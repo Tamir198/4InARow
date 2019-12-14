@@ -260,10 +260,12 @@ bool check_win_horizontally(int col, int row, char c) {
 	return counter > 3;
 }
 bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
-	//todo check wrong return value
-	//Looks like working
+	////works and inside the array
+	//Looks like working right to left and bottom
 	int i, counter = 1;
+	
 	for (i = -1; i >= -4; i--) {
+
 		if (isInsideTheArray(row + i, col - i) && c == getCell(row + i, col - i)) {
 			counter++;
 		}
@@ -271,12 +273,13 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 			break;
 		}
 	}
+	
 
-	//works ????
+	//left to right not working with isInsideTheArray method but workds fine without
+	//todo add isInsideTheArray to here
 	for (i = 1; i <= 4; i++) {
-		//todo add isInsideTheArray to here
 		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
-		printf("This row %d	this col %d  ", row - i, col - i);
+		printf("This row %d	this col %d  ", row + i, col - i);
 		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
@@ -287,9 +290,10 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	return counter > 3;
 }
 bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
+	//working and inside the array
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
-		//todo add isInsideTheArray to here
+		//if (isInsideTheArray(row - i, col - i) &&  c == getCell(row - i, col - i)) {
 		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
@@ -300,8 +304,9 @@ bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
 
 	//works
 	for (i = 1; i <= 4; i++) {
-		//todo add isInsideTheArray to here
-		if (c == getCell(row - i, col - i)) {
+		//working and inside the array
+		//if (isInsideTheArray(row - i, col - i) && c == getCell(row - i, col - i)) {
+		if ( c == getCell(row - i, col - i)) {
 			counter++;
 		}
 		else {
@@ -338,10 +343,11 @@ int getLastRow(int col) {
 
 bool isInsideTheArray(int row, int col) {
 	//outside the array (return false to not )
-	if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1) {
-		printf("OUTSIDE THE ARRAY\n");
+	if (col < 0 || col > COLS - 1 || row < 0 || row > ROWS - 1) {
+		printf("OUTSIDE THE ARRAY row %d and col %d \n", row, col);
 		return false;
-	}else {
+	}
+	else {
 		return true;
 	}
 }
