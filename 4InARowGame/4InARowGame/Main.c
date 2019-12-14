@@ -41,6 +41,7 @@ bool isColumNumberValid(int col);
 bool isColumFull(int col);
 bool isGameWon(int col, int row, char c);
 bool isTie();
+bool isInsideTheArray(int row, int col);
 
 int scanNumber(char c);
 int chooseFreeSquare(int col);
@@ -161,7 +162,7 @@ int scanNumber(char c) {
 
 
 bool isGameWon(int col, int row, char c) {
-	
+
 	return  (
 		check_win_vertically(col, row, c) ||
 		check_win_horizontally(col, row, c) ||
@@ -181,7 +182,7 @@ void startGame() {
 	while (true) {
 		lastCol = askPlayerInput(player1);
 		if (isGameWon(lastCol, getLastRow(lastCol), player1)) {
-			printf("Player %c won" , player1);
+			printf("Player %c won", player1);
 			scanf("%c", &flag);
 			break;
 		}
@@ -222,10 +223,10 @@ bool isTie() {
 }
 
 bool check_win_vertically(int col, int row, char c) {
-	//working (i + 1)
+	//working (i + 1) and inside the  array
 	int i, counter = 1;
 	for (i = row + 1; i < row + 4; i++) {
-		if (c == getCell(i, col)) {
+		if (isInsideTheArray(row - 1 , col) && c == getCell(i, col)) {
 			counter++;
 		}
 		else {
@@ -237,9 +238,9 @@ bool check_win_vertically(int col, int row, char c) {
 
 bool check_win_horizontally(int col, int row, char c) {
 	int i, counter = 1;
-	// Right to left
+	// Right to left working and inside the array
 	for (i = col - 1; i >= col - 3; i--) {
-		if (c == getCell(row, i)) {
+		if (isInsideTheArray(row - 1, i + 1) && c == getCell(row, i)) {
 			counter++;
 		}
 		else {
@@ -247,9 +248,9 @@ bool check_win_horizontally(int col, int row, char c) {
 		}
 	}
 
-		//left to right
+	//left to right working and inside the array
 	for (i = col + 1; i <= col + 3; i++) {
-		if (c == getCell(row, i)) {
+		if (isInsideTheArray(row - 1, i - 2) && c == getCell(row, i)) {
 			counter++;
 		}
 		else {
@@ -259,11 +260,13 @@ bool check_win_horizontally(int col, int row, char c) {
 	return counter > 3;
 }
 bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
-	//todo check wrong return value
-	//need fix
+	////works and inside the array
+	//Looks like working right to left and bottom
 	int i, counter = 1;
+	
 	for (i = -1; i >= -4; i--) {
-		if (c == getCell(row + i, col - i)) {
+
+		if (isInsideTheArray(row + i, col - i) && c == getCell(row + i, col - i)) {
 			counter++;
 		}
 		else {
@@ -271,8 +274,12 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 		}
 	}
 	
-	//works
+
+	//left to right not working with isInsideTheArray method but workds fine without
+	//todo add isInsideTheArray to here
 	for (i = 1; i <= 4; i++) {
+		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
+		printf("This row %d	this col %d  ", row + i, col - i);
 		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
@@ -283,8 +290,10 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	return counter > 3;
 }
 bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
+	//working and inside the array
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
+		//if (isInsideTheArray(row - i, col - i) &&  c == getCell(row - i, col - i)) {
 		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
@@ -295,7 +304,9 @@ bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
 
 	//works
 	for (i = 1; i <= 4; i++) {
-		if (c == getCell(row - i, col - i)) {
+		//working and inside the array
+		//if (isInsideTheArray(row - i, col - i) && c == getCell(row - i, col - i)) {
+		if ( c == getCell(row - i, col - i)) {
 			counter++;
 		}
 		else {
@@ -330,3 +341,13 @@ int getLastRow(int col) {
 	return lastFreeRow;
 }
 
+bool isInsideTheArray(int row, int col) {
+	//outside the array (return false to not )
+	if (col < 0 || col > COLS - 1 || row < 0 || row > ROWS - 1) {
+		printf("OUTSIDE THE ARRAY row %d and col %d \n", row, col);
+		return false;
+	}
+	else {
+		return true;
+	}
+}
