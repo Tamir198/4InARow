@@ -223,7 +223,7 @@ bool isTie() {
 }
 
 bool check_win_vertically(int col, int row, char c) {
-	//working (i + 1) and withing array
+	//working (i + 1) and inside the  array
 	int i, counter = 1;
 	for (i = row + 1; i < row + 4; i++) {
 		if (isInsideTheArray(row - 1 , col) && c == getCell(i, col)) {
@@ -238,7 +238,7 @@ bool check_win_vertically(int col, int row, char c) {
 
 bool check_win_horizontally(int col, int row, char c) {
 	int i, counter = 1;
-	// Right to left working + inside the array
+	// Right to left working and inside the array
 	for (i = col - 1; i >= col - 3; i--) {
 		if (isInsideTheArray(row - 1, i + 1) && c == getCell(row, i)) {
 			counter++;
@@ -248,10 +248,8 @@ bool check_win_horizontally(int col, int row, char c) {
 		}
 	}
 
-	//left to right
+	//left to right working and inside the array
 	for (i = col + 1; i <= col + 3; i++) {
-		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
-		printf("This row %d	this col %d  ", row - 1, i + 1 - 2);
 		if (isInsideTheArray(row - 1, i - 2) && c == getCell(row, i)) {
 			counter++;
 		}
@@ -266,6 +264,8 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	//need fix
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
+		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
+		printf("This row %d	this col %d  ", row + i, col - i);
 		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
