@@ -9,47 +9,28 @@
 #define COLS 7
 char board[ROWS][COLS];
 
-#pragma region Declarations
+
 
 
 
 /*********** Declarations ************/
-
-/// This function initializes the game board by assigning each cell
-/// with ' ' (resulting with an empty game board).
-void initBoard();
-
-/// This function gets a row number and a column number (a cell),
-/// and returns the character in that cell (could be 'X', 'O' or ' ').
-/// For example:
-/// char c = getCell(1, 1);
 char getCell(int row, int col);
 
-/// This function gets a row number, a column number and a sign,
-/// and assigns the cell with the given sign.
-/// For example:
-/// setCell(1, 1, 'X');
+void initBoard();
 void setCell(int row, int col, char sign);
-
-/// This function clears the screen.
 void clearScreen();
 void printBoard();
 void startGame();
-
-bool PutCharOnBoard(int col, char c);
-bool isColumNumberValid(int col);
-bool isColumFull(int col);
-bool isGameWon(int col, int row, char c);
-bool isTie();
-bool isInsideTheArray(int row, int col);
 
 int scanNumber(char c);
 int chooseFreeSquare(int col);
 int askPlayerInput(char c);
 int getLastRow(int col);
-#pragma endregion
-int n = 4;
-char c = 'X';
+
+bool PutCharOnBoard(int col, char c);
+bool isColumNumberValid(int col);
+bool isGameWon(int col, int row, char c);
+bool isInsideTheArray(int row, int col);
 //Checks for win
 bool check_win_vertically(int col, int row, char c);
 bool check_win_horizontally(int col, int row, char c);
@@ -57,24 +38,14 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c);
 bool check_win_diagnol_top_left_bottom_right(int col, int row, char c);
 bool is_board_full();
 
-
-
-
-
-/*************** Main ****************/
 int main() {
 	startGame();
-	//manual testing 
 	system("pause");
-
 }
 
-
-/********** Implementations **********/
 char getCell(int row, int col) {
 	return board[row - 1][col - 1];
 }
-
 
 void setCell(int row, int col, char sign) {
 	board[row - 1][col - 1] = sign;
@@ -119,14 +90,11 @@ bool PutCharOnBoard(int col, char c) {
 
 int chooseFreeSquare(int col) {
 	int i;
-	//todo fix wrong return value
 	for (i = ROWS; i > 0; i--) {
 		if (getCell(i, col) == ' ') {
-			//F is 5 and A is 0 on the board
 			return i;
 		}
 	}
-
 	printf("Colum is full");
 	return 0;
 }
@@ -141,11 +109,6 @@ bool isColumNumberValid(int col) {
 	return true;
 }
 
-
-bool isColumFull(int col) {
-	//todo fill method
-	return false;
-}
 
 int scanNumber(char c) {
 	int col, row;
@@ -162,9 +125,7 @@ int scanNumber(char c) {
 
 
 bool isGameWon(int col, int row, char c) {
-
-	return  (
-		check_win_vertically(col, row, c) ||
+	return(check_win_vertically(col, row, c) ||
 		check_win_horizontally(col, row, c) ||
 		check_win_diagnol_top_right_bottom_left(col, row, c) ||
 		check_win_diagnol_top_left_bottom_right(col, row, c));
@@ -177,7 +138,6 @@ void startGame() {
 	int lastCol;
 	initBoard();
 	printBoard();
-
 
 	while (true) {
 		lastCol = askPlayerInput(player1);
@@ -213,20 +173,11 @@ void startGame() {
 }
 
 
-
-bool isTie() {
-	//todo fill method
-	if (true) {
-		return true;
-	}
-	return false;
-}
-
 bool check_win_vertically(int col, int row, char c) {
 	//working (i + 1) and inside the  array
 	int i, counter = 1;
 	for (i = row + 1; i < row + 4; i++) {
-		if (isInsideTheArray(row - 1 , col) && c == getCell(i, col)) {
+		if (isInsideTheArray(row - 1, col) && c == getCell(i, col)) {
 			counter++;
 		}
 		else {
@@ -263,7 +214,7 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	////works and inside the array
 	//Looks like working right to left and bottom
 	int i, counter = 1;
-	
+
 	for (i = -1; i >= -4; i--) {
 
 		if (isInsideTheArray(row + i, col - i) && c == getCell(row + i, col - i)) {
@@ -273,13 +224,8 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 			break;
 		}
 	}
-	
 
-	//left to right not working with isInsideTheArray method but workds fine without
-	//todo add isInsideTheArray to here
 	for (i = 1; i <= 4; i++) {
-		//if (col < 0 || col > COLS - 1 && row < 0 || row > ROWS - 1)
-		printf("This row %d	this col %d  ", row + i, col - i);
 		if (c == getCell(row + i, col - i)) {
 			counter++;
 		}
@@ -290,10 +236,8 @@ bool check_win_diagnol_top_right_bottom_left(int col, int row, char c) {
 	return counter > 3;
 }
 bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
-	//working and inside the array
 	int i, counter = 1;
 	for (i = -1; i >= -4; i--) {
-		//if (isInsideTheArray(row - i, col - i) &&  c == getCell(row - i, col - i)) {
 		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
@@ -302,11 +246,8 @@ bool check_win_diagnol_top_left_bottom_right(int col, int row, char c) {
 		}
 	}
 
-	//works
 	for (i = 1; i <= 4; i++) {
-		//working and inside the array
-		//if (isInsideTheArray(row - i, col - i) && c == getCell(row - i, col - i)) {
-		if ( c == getCell(row - i, col - i)) {
+		if (c == getCell(row - i, col - i)) {
 			counter++;
 		}
 		else {
@@ -342,9 +283,7 @@ int getLastRow(int col) {
 }
 
 bool isInsideTheArray(int row, int col) {
-	//outside the array (return false to not )
 	if (col < 0 || col > COLS - 1 || row < 0 || row > ROWS - 1) {
-		printf("OUTSIDE THE ARRAY row %d and col %d \n", row, col);
 		return false;
 	}
 	else {
